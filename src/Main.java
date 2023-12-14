@@ -1,5 +1,8 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+
+        JSONPlaceholderFetcher jsonPlaceholderFetcher = new JSONPlaceholderFetcher();
+
+        System.out.println(jsonPlaceholderFetcher.getSinglePost(1));
     }
 }
