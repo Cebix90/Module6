@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -6,7 +7,7 @@ import java.net.http.HttpResponse;
 
 public class JSONPlaceholderFetcher {
     final HttpClient client = HttpClient.newBuilder().build();
-    URI example = URI.create("https://jsonplaceholder.typicode.com/posts/");
+    final private URI example = URI.create("https://jsonplaceholder.typicode.com/posts/");
 
     public String getSinglePost(int id){
         try {
@@ -49,7 +50,7 @@ public class JSONPlaceholderFetcher {
     private static String handleHttpResponse(HttpResponse<String> response) {
         System.out.println("Status code: " + response.statusCode());
 
-        if (response.statusCode() == 200) {
+        if (response.statusCode() == HttpURLConnection.HTTP_OK) {
             System.out.println("Response Body:");
             return response.body();
         } else {
