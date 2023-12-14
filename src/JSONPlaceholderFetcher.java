@@ -15,21 +15,45 @@ public class JSONPlaceholderFetcher {
                 .GET()
                 .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.statusCode());
-
-            System.out.println("Response Body:");
-            return response.body();
+            HttpResponse<String> response = getHttpResponse(request);
+            return handleHttpResponse(response);
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("An error occurred while fetching the post: " + e.getMessage(), e);
         }
     }
 
-//    public String getAllPosts(){
-//
-//    }
+    public String getAllPosts(){
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(example)
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = getHttpResponse(request);
+            return handleHttpResponse(response);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("An error occurred while fetching the post: " + e.getMessage(), e);
+        }
+    }
 //
 //    public boolean addPost(String post){
 //
 //    }
+
+
+    private HttpResponse<String> getHttpResponse(HttpRequest request) throws IOException, InterruptedException {
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response;
+    }
+
+    private static String handleHttpResponse(HttpResponse<String> response) {
+        System.out.println("Status code: " + response.statusCode());
+
+        if (response.statusCode() == 200) {
+            System.out.println("Response Body:");
+            return response.body();
+        } else {
+            throw new RuntimeException("Failed to fetch post. HTTP status code: " + response.statusCode());
+        }
+    }
 }
